@@ -22,14 +22,16 @@ class TestCase extends BaseTestCase
     protected function mockIo(array $askResponses): IOInterface
     {
         $io = $this->createMock(IOInterface::class);
-        $io->expects($this->atLeastOnce())->method('ask')->willReturnOnConsecutiveCalls(...$askResponses);
+        $io->expects($this->atLeastOnce())
+            ->method('ask')
+            ->willReturnOnConsecutiveCalls(...$askResponses);
 
         return $io;
     }
 
     protected function removeDir(string $dir): void
     {
-        if (!is_dir($dir)) {
+        if (! is_dir($dir)) {
             return;
         }
 
@@ -53,8 +55,12 @@ class TestCase extends BaseTestCase
     protected function mockTool(string $name = 'TestTool', string $command = 'vendor/bin/test run'): ToolInterface
     {
         $tool = $this->createMock(ToolInterface::class);
-        $tool->expects($this->once())->method('getName')->willReturn($name);
-        $tool->expects($this->once())->method('getCommand')->willReturn($command);
+        $tool->expects($this->once())
+            ->method('getName')
+            ->willReturn($name);
+        $tool->expects($this->once())
+            ->method('getCommand')
+            ->willReturn($command);
 
         return $tool;
     }

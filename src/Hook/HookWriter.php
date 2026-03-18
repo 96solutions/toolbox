@@ -32,13 +32,13 @@ class HookWriter
         }
 
         $io->writeError('<warning>Could not find .git/hooks/ in project root.</warning>');
-        $custom = $io->ask('Provide path to hooks directory (leave empty to cancel): ', '');
+        $custom = self::askString($io, 'Provide path to hooks directory (leave empty to cancel): ', '');
 
-        if ($custom === null || $custom === '') {
+        if ($custom === '') {
             return null;
         }
 
-        if (!is_dir($custom)) {
+        if (! is_dir($custom)) {
             $io->writeError('<error>Directory not found: ' . $custom . '</error>');
 
             return null;
@@ -57,14 +57,18 @@ class HookWriter
     {
         $hookPath = $hooksDir . '/' . self::HOOK_FILE;
 
-        if (!file_exists($hookPath)) {
+        if (! file_exists($hookPath)) {
             return true;
         }
 
         $io->write('<info>A pre-commit hook already exists.</info>');
-        $action = $io->ask('What would you like to do? [o]verwrite / [b]ackup and replace / [c]ancel [c]: ', 'c');
+        $action = self::askString(
+            $io,
+            'What would you like to do? [o]verwrite / [b]ackup and replace / [c]ancel [c]: ',
+            'c'
+        );
 
-        switch (strtolower(trim($action ?? 'c'))) {
+        switch (strtolower(trim($action))) {
             case 'o':
                 return true;
             case 'b':
@@ -87,5 +91,12 @@ class HookWriter
         $hookPath = $hooksDir . '/' . self::HOOK_FILE;
         file_put_contents($hookPath, $content);
         chmod($hookPath, 0755);
+    }
+
+    private static function askString(IOInterface $io, string $question, string $default): string
+    {
+        $answer = $io->ask($question, $default);
+
+        return is_string($answer) ? $answer : $default;
     }
 }

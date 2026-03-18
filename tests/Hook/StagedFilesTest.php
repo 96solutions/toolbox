@@ -32,8 +32,8 @@ class StagedFilesTest extends TestCase
 
     public function testGetFilterExpressionUsesProvidedExtension(): void
     {
-        $js  = (new StagedFiles())->getFilterExpression('js');
-        $ts  = (new StagedFiles())->getFilterExpression('ts');
+        $js = (new StagedFiles())->getFilterExpression('js');
+        $ts = (new StagedFiles())->getFilterExpression('ts');
 
         self::assertStringContainsString("grep '\\.js$'", $js);
         self::assertStringContainsString("grep '\\.ts$'", $ts);

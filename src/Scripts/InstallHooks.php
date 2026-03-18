@@ -28,7 +28,7 @@ class InstallHooks
     public static function install(Event $event): void
     {
         $io = $event->getIO();
-        $projectRoot = getcwd();
+        $projectRoot = getcwd() ?: '';
 
         $io->write('');
         $io->write('<info>Git pre-commit hook installer</info>');
@@ -43,7 +43,7 @@ class InstallHooks
             return;
         }
 
-        if (!$writer->handleExisting($hooksDir, $io)) {
+        if (! $writer->handleExisting($hooksDir, $io)) {
             return;
         }
 
@@ -70,10 +70,7 @@ class InstallHooks
      */
     private static function selectTools(IOInterface $io, string $projectRoot): array
     {
-        $available = [
-            new PhpStan(),
-            new EasyCodingStandard(),
-        ];
+        $available = [new PhpStan(), new EasyCodingStandard(), ];
 
         $io->write('Available tools:');
         foreach ($available as $i => $tool) {
@@ -81,9 +78,9 @@ class InstallHooks
         }
         $io->write('');
 
-        $input = $io->ask('Select tools to install (comma-separated numbers, e.g. 1,2): ', '');
+        $input = self::askString($io, 'Select tools to install (comma-separated numbers, e.g. 1,2): ', '');
 
-        if ($input === null || $input === '') {
+        if ($input === '') {
             return [];
         }
 
@@ -91,7 +88,7 @@ class InstallHooks
         foreach (array_map('trim', explode(',', $input)) as $index) {
             $i = (int) $index - 1;
 
-            if (!isset($available[$i])) {
+            if (! isset($available[$i])) {
                 $io->writeError('<warning>Unknown selection: ' . $index . '</warning>');
                 continue;
             }
@@ -104,5 +101,12 @@ class InstallHooks
         }
 
         return $selected;
+    }
+
+    private static function askString(IOInterface $io, string $question, string $default): string
+    {
+        $answer = $io->ask($question, $default);
+
+        return is_string($answer) ? $answer : $default;
     }
 }

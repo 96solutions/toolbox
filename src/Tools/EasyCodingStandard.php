@@ -33,13 +33,13 @@ class EasyCodingStandard implements ToolInterface
      */
     public function configure(IOInterface $io, string $projectRoot): void
     {
-        $this->configFile = $io->ask('  Config file path [ecs.php]: ', 'ecs.php') ?? 'ecs.php';
+        $this->configFile = self::askString($io, '  Config file path [ecs.php]: ', 'ecs.php');
 
         $defaultBinary = $projectRoot . '/vendor/bin/ecs';
         if (file_exists($defaultBinary)) {
             $this->binary = 'vendor/bin/ecs';
         } else {
-            $this->binary = $io->ask('  vendor/bin/ecs not found. Provide binary path: ', 'ecs') ?? 'ecs';
+            $this->binary = self::askString($io, '  vendor/bin/ecs not found. Provide binary path: ', 'ecs');
         }
 
         $this->configured = true;
@@ -60,5 +60,12 @@ class EasyCodingStandard implements ToolInterface
     public function isConfigured(): bool
     {
         return $this->configured;
+    }
+
+    private static function askString(IOInterface $io, string $question, string $default): string
+    {
+        $answer = $io->ask($question, $default);
+
+        return is_string($answer) ? $answer : $default;
     }
 }

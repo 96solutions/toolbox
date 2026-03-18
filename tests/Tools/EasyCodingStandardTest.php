@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace nssolutions\Toolbox\Tests\Tools;
 
-use nssolutions\Toolbox\Tools\EasyCodingStandard;
 use nssolutions\Toolbox\Tests\TestCase;
+use nssolutions\Toolbox\Tools\EasyCodingStandard;
 
 class EasyCodingStandardTest extends TestCase
 {
@@ -92,5 +92,4 @@ class EasyCodingStandardTest extends TestCase
 
         self::assertStringStartsWith('ecs', $tool->getCommand());
     }
-
 }

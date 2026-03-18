@@ -6,8 +6,6 @@ namespace nssolutions\Toolbox\Tests\Hook;
 
 use nssolutions\Toolbox\Hook\HookRenderer;
 use nssolutions\Toolbox\Tests\TestCase;
-use nssolutions\Toolbox\Tools\ToolInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class HookRendererTest extends TestCase
 {
@@ -89,11 +87,10 @@ class HookRendererTest extends TestCase
     public function testToolNameIsEscapedInOutput(): void
     {
         // Backslash in name should not break the generated PHP array literal
-        $tool = $this->mockTool("Tool\\Name", 'vendor/bin/tool');
+        $tool = $this->mockTool('Tool\\Name', 'vendor/bin/tool');
         $script = (new HookRenderer())->render([$tool]);
 
         // The rendered script must be valid PHP (eval as a basic smoke check)
         self::assertStringContainsString('Tool', $script);
     }
-
 }

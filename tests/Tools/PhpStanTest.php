@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace nssolutions\Toolbox\Tests\Tools;
 
-use nssolutions\Toolbox\Tools\PhpStan;
 use nssolutions\Toolbox\Tests\TestCase;
+use nssolutions\Toolbox\Tools\PhpStan;
 
 class PhpStanTest extends TestCase
 {
@@ -93,5 +93,4 @@ class PhpStanTest extends TestCase
 
         self::assertStringStartsWith('phpstan', $tool->getCommand());
     }
-
 }

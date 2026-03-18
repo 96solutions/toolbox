@@ -29,8 +29,10 @@ class HookWriterTest extends TestCase
         mkdir($hooksDir, 0755, true);
 
         $io = $this->createMock(IOInterface::class);
-        $io->expects($this->never())->method('ask');
-        $io->expects($this->never())->method('writeError');
+        $io->expects($this->never())
+            ->method('ask');
+        $io->expects($this->never())
+            ->method('writeError');
 
         $result = (new HookWriter())->resolve($this->tempDir, $io);
 
@@ -43,8 +45,11 @@ class HookWriterTest extends TestCase
         mkdir($customDir, 0755, true);
 
         $io = $this->createMock(IOInterface::class);
-        $io->expects($this->once())->method('ask')->willReturn($customDir);
-        $io->expects($this->once())->method('writeError');
+        $io->expects($this->once())
+            ->method('ask')
+            ->willReturn($customDir);
+        $io->expects($this->once())
+            ->method('writeError');
 
         $result = (new HookWriter())->resolve($this->tempDir, $io);
 
@@ -86,8 +91,10 @@ class HookWriterTest extends TestCase
     public function testHandleExistingReturnsTrueWhenNoHookPresent(): void
     {
         $io = $this->createMock(IOInterface::class);
-        $io->expects($this->never())->method('ask');
-        $io->expects($this->never())->method('write');
+        $io->expects($this->never())
+            ->method('ask');
+        $io->expects($this->never())
+            ->method('write');
 
         $result = (new HookWriter())->handleExisting($this->tempDir, $io);
 
@@ -168,5 +175,4 @@ class HookWriterTest extends TestCase
         $perms = fileperms($this->tempDir . '/pre-commit') & 0777;
         self::assertSame(0755, $perms);
     }
-
 }

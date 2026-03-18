@@ -36,12 +36,12 @@ class PhpStan implements ToolInterface
      */
     public function configure(IOInterface $io, string $projectRoot): void
     {
-        $this->level = $io->ask('  Analysis level (0-9 or max) [max]: ', 'max') ?? 'max';
+        $this->level = self::askString($io, '  Analysis level (0-9 or max) [max]: ', 'max');
 
         $io->write('  Enter paths to analyse one by one, leave empty to finish.');
         while (true) {
-            $path = $io->ask('  Path: ', '');
-            if ($path === null || $path === '') {
+            $path = self::askString($io, '  Path: ', '');
+            if ($path === '') {
                 break;
             }
             $this->paths[] = $path;
@@ -51,7 +51,7 @@ class PhpStan implements ToolInterface
         if (file_exists($defaultBinary)) {
             $this->binary = 'vendor/bin/phpstan';
         } else {
-            $this->binary = $io->ask('  vendor/bin/phpstan not found. Provide binary path: ', 'phpstan') ?? 'phpstan';
+            $this->binary = self::askString($io, '  vendor/bin/phpstan not found. Provide binary path: ', 'phpstan');
         }
 
         $this->configured = true;
@@ -77,5 +77,12 @@ class PhpStan implements ToolInterface
     public function isConfigured(): bool
     {
         return $this->configured;
+    }
+
+    private static function askString(IOInterface $io, string $question, string $default): string
+    {
+        $answer = $io->ask($question, $default);
+
+        return is_string($answer) ? $answer : $default;
     }
 }
