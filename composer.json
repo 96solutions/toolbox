@@ -1,18 +1,27 @@
 {
     "name": "96solutions/toolbox",
     "description": "PHP git hook manager",
+    "keywords": ["git", "hooks", "pre-commit", "post-commit"],
+    "version": "1.0.0",
     "type": "library",
-    "require-dev": {
+    "require": {
         "php": ">=8.0",
-        "composer/composer": "~1 || ^2.0",
+        "composer/composer": "~1 || ^2.0"
+    },
+    "require-dev": {
         "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": ">=9.0",
         "symplify/easy-coding-standard": "^10.2"
     },
+    "autoload-dev": {
+        "psr-4": {
+            "nssolutions\\Toolbox\\Tests\\": "tests/"
+        }
+    },
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "96solutions\\Toolbox\\": "src/"
+            "nssolutions\\Toolbox\\": "src/"
         }
     },
     "authors": [
