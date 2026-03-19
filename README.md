@@ -107,3 +107,14 @@ vendor/bin/phpunit
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## TODO
+
+- non-blocking scripts execution
+- add the ability to select hooks to install
+- add a security check script
+- add the ability to run scripts in docker containers
+- improve readme
+- - add a screenshot
+- - add links to repository & Packagist
+- - add badges
