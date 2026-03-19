@@ -4,8 +4,8 @@ A PHP library that provides interactive Composer scripts to install and configur
 
 ## Requirements
 
-- PHP >= 8.0
-- Composer
+- PHP >= 8.4
+- Composer 2
 
 ## Installation
 

@@ -2,10 +2,9 @@
     "name": "96solutions/toolbox",
     "description": "PHP git hook manager",
     "keywords": ["git", "hooks", "pre-commit", "post-commit"],
-    "version": "1.0.0",
     "type": "library",
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.4",
         "composer/composer": "~1 || ^2.0"
     },
     "require-dev": {
