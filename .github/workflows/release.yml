@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, xml, iconv, zip
+          tools: composer:v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run tests
+        run: vendor/bin/phpunit
+
+      - name: Code style check
+        run: vendor/bin/ecs check --config=ecs.php
+
+      - name: Static analysis
+        run: vendor/bin/phpstan analyse --configuration=phpstan.neon
+
+      - name: Notify Packagist
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          response=$(curl -s -XPOST -H 'Content-Type:application/json' 'https://packagist.org/api/update-package?username=96solutions&apiToken=${{ secrets.PACKAGIST_API_KEY }}' -d '{"repository":"https://github.com/96solutions/toolbox"}')
+          echo "$response"
+          echo "$response" | grep -q '"status":"success"' || exit 1
